@@ -23,3 +23,4 @@ try:
 except:
     myString = ''.join(myList)
     print(myString)
+print("")
