@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from datetime import date
+import sys
 
 
 def main():
@@ -21,6 +22,13 @@ def main():
 
 def souping(url):
     weather=requests.get(url)
+    if weather.status_code == 200:
+        pass
+    else:
+        print("")
+        print("Город не найден, либо название введено некорректно.")
+        print("")
+        main()
     soap_weather = BeautifulSoup(weather.text, 'html.parser')
     parsing(soap_weather)
 
@@ -67,6 +75,7 @@ def printing(weather_evening2, weather_evening1, weather_day2, weather_day1,
     after = desc.index(substr) + 2
     my_desc = ''.join(desc[after:])
     print(my_desc)
+    sys.exit()
 
 
 main()
