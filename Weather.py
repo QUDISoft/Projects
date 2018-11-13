@@ -6,7 +6,15 @@ from datetime import date
 def main():
 
     first = 'https://sinoptik.com.ru/погода-'
-    city_name = str(input("Введите названия города для получения информации о погоде: "))
+    while True:
+        city_name = str(input("Введите названия города для получения информации о погоде: "))
+        if city_name.isalpha():
+            break
+        else:
+            print("")
+            print("В названии города присутсвуют недопустимые символы, попробуйте снова.")
+            print("")
+            continue
     url = first+city_name
     souping(url)
 
