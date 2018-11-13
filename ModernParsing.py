@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from lxml import html
 from lxml.html import html5parser
 import requests
-
-#Тут я тестил, как отличается lxml от bs4. Понял только, что bs4 удобмнее
+# Р° С‚РµРїРµСЂСЊ С…СѓСЏСЃСЊ, РєРѕРґРёСЂРѕРІРѕС‡РєР° СѓСЃС‚Р°РЅРѕРІР»РµРЅР°
+#РўСѓС‚ СЏ С‚РµСЃС‚РёР», РєР°Рє РѕС‚Р»РёС‡Р°РµС‚СЃСЏ lxml РѕС‚ bs4. РџРѕРЅСЏР» С‚РѕР»СЊРєРѕ, С‡С‚Рѕ bs4 СѓРґРѕР±РјРЅРµРµ
     
     
 proxy_url = 'https://rutracker.org/forum/index.php'     
