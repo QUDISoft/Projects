@@ -2,7 +2,7 @@ from lxml import html
 from lxml.html import html5parser
 import requests
 
-    
+#Тут я тестил, как отличается lxml от bs4. Понял только, что bs4 удобмнее
     
     
 proxy_url = 'https://rutracker.org/forum/index.php'     
