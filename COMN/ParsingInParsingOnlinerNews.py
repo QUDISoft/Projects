@@ -57,3 +57,4 @@ while d != site:
 input('press ENTER to more info: ')
 print('\n\n\n\n\n')
 main(*p)
+input('press ENTER to EXIT ')
