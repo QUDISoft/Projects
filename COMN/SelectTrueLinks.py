@@ -32,12 +32,12 @@ def findLinks(url, select, exceptions):
     links = soup.find_all('a', href=True)
     http='http' 
     expns=len(exceptions)
-    f=0 # это пустая переменная. У меня какой-то дики затуп случился и я хз как сделать подругому continue, pass и break не помогают, проблема с OR описана ниже
-    for link in links:        #тут проверяем, подходит ли наша ссылка параметрам ada, select и не является ли исключением
+    f=0
+    trueLinks=[]
+    for link in links:
         httpLink=link['href']
         if http and select in httpLink:
             f=0
-            tempLinks=[]
             for exception in exceptions:
                 if exception in httpLink:
                     break
@@ -45,10 +45,11 @@ def findLinks(url, select, exceptions):
                     f+=1
                 
             if f==expns:
-                print(httpLink)
+                trueLinks.append(httpLink)
+    return trueLinks
             
-exceptions='facebook', 'vk.com', 'twitter', 'instagram'
-url='https://ub.com.ua/ru'
+#exceptions='facebook', 'vk.com', 'twitter', 'instagram'
+#url='https://ub.com.ua/ru'
 
-select=select(url)
-findLinks(url, select, exceptions)
+#select=select(url)
+#findLinks(url, select, exceptions)
