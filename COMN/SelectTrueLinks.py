@@ -29,22 +29,23 @@ def select(a):
 def findLinks(url, select, exceptions):
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'html.parser')
-    b = soup.find_all('a', href=True)
-    ada='http://'  
+    links = soup.find_all('a', href=True)
+    http='http' 
+    expns=len(exceptions)
     f=0 # это пустая переменная. У меня какой-то дики затуп случился и я хз как сделать подругому continue, pass и break не помогают, проблема с OR описана ниже
-    for link in b:        #тут проверяем, подходит ли наша ссылка параметрам ada, select и не является ли исключением
-        q=link['href']
-        if ada and select in q:
-            if exceptions[0] in q:
-                f+=1
-            elif exceptions[1] in q:
-                f+=1
-            elif exceptions[2] in q:    # вот где я тупой? какого хуя exceptions[0] or exceptions[1]....in q не работает
-                f+=1
-            elif exceptions[3] in q:
-                f+=1            
-            else:
-                print(q)
+    for link in links:        #тут проверяем, подходит ли наша ссылка параметрам ada, select и не является ли исключением
+        httpLink=link['href']
+        if http and select in httpLink:
+            f=0
+            tempLinks=[]
+            for exception in exceptions:
+                if exception in httpLink:
+                    break
+                else:
+                    f+=1
+                
+            if f==expns:
+                print(httpLink)
             
 exceptions='facebook', 'vk.com', 'twitter', 'instagram'
 url='https://ub.com.ua/ru'
