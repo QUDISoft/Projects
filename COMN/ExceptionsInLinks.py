@@ -2,7 +2,7 @@
 
 exceptions='instagram', 'vk.com', 'facebook', 'twitter'
 links='https://ru.wikipedia.org/vk.com/wiki/PyQt', 'https://ru.wikipedia.org/wiki/PyQt', 'https://ru.wikipedia.org/vk.com/'
-a=len(exceptions)
+expns=len(exceptions)
 for link in links:
     f=0
     tempLinks=[]
@@ -12,6 +12,6 @@ for link in links:
         else:
             f+=1
         
-    if f==a:
+    if f==expns:
         print(link)
         
