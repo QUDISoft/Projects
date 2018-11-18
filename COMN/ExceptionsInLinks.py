@@ -12,6 +12,6 @@ for link in links:
         else:
             f+=1
         
-    if f==len(exceptions):
+    if f==a:
         print(link)
         
