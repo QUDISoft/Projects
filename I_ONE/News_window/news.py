@@ -16,6 +16,9 @@ class MyWin(QtWidgets.QMainWindow):
     def Parse(self):
         zagolovki = []
         links = []
+        count = 0
+        sub = 'forum'
+
         s = 'https://www.onliner.by/'
         p = 'https://people.onliner.by'
         a = 'https://auto.onliner.by'
@@ -39,6 +42,10 @@ class MyWin(QtWidgets.QMainWindow):
         z_realt = re.findall('<span class="news-helpers_hide_mobile-small"(.+?)</span>', rea)
         links_mini_news = re.findall('<a href=(.+?)class="b-teasers-2__teaser-i"', doc)
 
+        for forum in links_mini_news:
+            if forum.count(sub):
+                count += 1
+
         for i in people:
             links.append(p+i)
         for i in auto:
@@ -47,7 +54,7 @@ class MyWin(QtWidgets.QMainWindow):
             links.append(t+i)
         for i in realt:
             links.append(r+i)
-        for i in links_mini_news:
+        for i in links_mini_news[0:-count]:
             links.append(i[1:])
 
         for l in z_people:
@@ -58,7 +65,7 @@ class MyWin(QtWidgets.QMainWindow):
             zagolovki.append(l)
         for l in z_realt:
             zagolovki.append(l)
-        for l in mini_news:
+        for l in mini_news[0:-count]:
             zagolovki.append(l)
 
         for y in zagolovki:
