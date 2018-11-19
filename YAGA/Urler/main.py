@@ -15,14 +15,28 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.batton.clicked.connect(self.browse_folder)
         self.pushButton.clicked.connect(self.addExc)
         self.exceptions=[]
+        try:
+            f=open('exc.txt', 'r')
+            for line in f:
+                line=line[:-1]
+                self.exceptions.append(line)
+            for x in self.exceptions:
+                self.listWidget_2.addItem(x)            
+        except:
+            print('file error')
+    def excFile(self):
+        f=open('exc.txt', 'w')  
+        return f
     def addExc(self):
-        f=''
+        f=self.excFile()        
         q=self.lineEdit_2.text()
         self.exceptions.append(q)              
         self.lineEdit_2.clear()
         self.listWidget_2.clear()
         for x in self.exceptions:
             self.listWidget_2.addItem(x)
+            f.write(x + '\n')
+        
 
     def browse_folder(self):
         self.listWidget.clear()  # На случай, если в списке уже есть элементы
