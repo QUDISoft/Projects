@@ -14,7 +14,9 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
         self.batton.clicked.connect(self.browse_folder)
         self.pushButton.clicked.connect(self.addExc)
+        self.pushButton_2.clicked.connect(self.delExc)
         self.exceptions=[]
+        print(self.listWidget_2.currentItem())
         try:
             f=open('exc.txt', 'r')
             for line in f:
@@ -24,13 +26,39 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 self.listWidget_2.addItem(x)            
         except:
             print('file error')
+        
+        
+    def delExc(self):
+        try:
+            row=self.listWidget_2.currentRow()
+            item=self.listWidget_2.item(row)
+            currentItem=item.text()        
+            newExcep=[]
+            for exception in self.exceptions:
+                if exception!=currentItem:
+                    newExcep.append(exception)    
+                else:
+                    continue
+            f=self.excFile()
+            self.listWidget_2.clear()
+            self.exceptions=newExcep
+            for x in newExcep:
+                self.listWidget_2.addItem(x)
+                f.write(x + '\n')
+        except:
+            print('Error: No selected items')
+            
+            
     def excFile(self):
         f=open('exc.txt', 'w')  
         return f
     def addExc(self):
         f=self.excFile()        
         q=self.lineEdit_2.text()
-        self.exceptions.append(q)              
+        if '' or ' ' in q:
+            print('Error: Spase detected')
+        else:
+            self.exceptions.append(q)              
         self.lineEdit_2.clear()
         self.listWidget_2.clear()
         for x in self.exceptions:
