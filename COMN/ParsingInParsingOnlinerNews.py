@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup
 import bs4
 import requests
 
-def paramss():
+def paramss(url):
     ''' Функция для хранения параметров всей(ну почти) программы '''
-    url='https://people.onliner.by/'
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'html.parser')
     news = soup.findAll('div', class_='news-tidings__speech')
@@ -44,9 +43,13 @@ def req(tempUrl):
     print('\n\n\n\n\n')
 
 
-
-
-p=paramss()           #создаем массив из того, что дает нам функция
+print('https://auto.onliner.by/ ---- Авто')
+print('https://people.onliner.by/ ---- Люди')
+print('https://tech.onliner.by/ ---- Технологии')
+print('https://realt.onliner.by/ ---- Недвижимость','\n\n')
+url=input('Введите одну из ссылок: ')
+print('\n')
+p=paramss(url)           #создаем массив из того, что дает нам функция
 site=len(p[2])
 d=0
 
@@ -56,5 +59,6 @@ while d != site:
     
 input('press ENTER to more info: ')
 print('\n\n\n\n\n')
+
 main(*p)
 input('press ENTER to EXIT ')
