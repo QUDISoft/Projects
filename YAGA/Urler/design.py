@@ -31,6 +31,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_2.addWidget(self.pushButton_2)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
@@ -74,6 +77,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Поиск ссылок на странице"))
         self.label_2.setText(_translate("MainWindow", "Исключения"))
+        self.pushButton_2.setText(_translate("MainWindow", "Удалить"))
         self.pushButton.setText(_translate("MainWindow", "Добавить"))
         self.label.setText(_translate("MainWindow", "Введите URL страцы и нажмите Поиск"))
         self.batton.setText(_translate("MainWindow", "Поиск"))
