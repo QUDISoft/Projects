@@ -42,5 +42,5 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Подслушано"))
-        self.pushButton.setText(_translate("MainWindow", "Узнать секреты"))
+        self.pushButton.setText(_translate("MainWindow", "Показать посты"))
 

@@ -1,4 +1,4 @@
-import requests, bs4
+import requests
 import Overheard_d
 from PyQt5 import QtWidgets
 import sys
@@ -33,7 +33,7 @@ class MyWin(QtWidgets.QMainWindow, Overheard_d.Ui_MainWindow):
         text = ''
         count = 0
         for x in mas:
-            if len(x) > 190:
+            if len(x) > 100:
                 count += 1
                 text = text + str(count) + '. ' + x + '\n\n'
 

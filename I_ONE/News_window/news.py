@@ -1,24 +1,25 @@
 import sys
-import re
 import html2text
 import requests
-from design import *
+import design
 from PyQt5 import QtWidgets
+from bs4 import BeautifulSoup
 
 
-class MyWin(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        QtWidgets.QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+class MyWin(QtWidgets.QMainWindow, design.Ui_MainWindow):
+
+    def __init__(self):
         self.news_links = []
+        super().__init__()
+        self.setupUi(self)
         self.parsing()
-        self.ui.pushButton.clicked.connect(self.text_news)
+        self.pushButton.clicked.connect(self.text_news)
 
     def parsing(self):
         news_name = []
         links = []
         count = 0
+        count2 = 0
         sub = 'forum'
 
         s = 'https://www.onliner.by/'
@@ -27,71 +28,81 @@ class MyWin(QtWidgets.QMainWindow):
         t = 'https://tech.onliner.by'
         r = 'https://realt.onliner.by'
 
-        doc = requests.get(s).text
-        peo = requests.get(p).text
-        aut = requests.get(a).text
-        tec = requests.get(t).text
-        rea = requests.get(r).text
+        mini = BeautifulSoup(requests.get(s).text, "html.parser")
+        mini_news = mini.findAll('span', class_="text-i")
+        links_mini_news = mini.findAll('a', class_='b-teasers-2__teaser-i')
 
-        mini_news = re.findall('<span class="text-i"(.+?)</span>', doc)
-        people = re.findall('<a href="(.+?)class="news-tidings__stub"', peo)
-        auto = re.findall('<a href="(.+?)class="news-tidings__stub"', aut)
-        tech = re.findall('<a href="(.+?)class="news-tidings__stub"', tec)
-        realty = re.findall('<a href="(.+?)class="news-tidings__stub"', rea)
+        peo = BeautifulSoup(requests.get(p).text, "html.parser")
+        z_people = peo.findAll('span', class_="news-helpers_hide_mobile-small")
+        people = peo.findAll('a', class_='news-tidings__stub')
 
-        z_people = re.findall('<span class="news-helpers_hide_mobile-small"(.+?)</span>', peo)
-        z_auto = re.findall('<span class="news-helpers_hide_mobile-small"(.+?)</span>', aut)
-        z_tech = re.findall('<span class="news-helpers_hide_mobile-small"(.+?)</span>', tec)
-        z_realty = re.findall('<span class="news-helpers_hide_mobile-small"(.+?)</span>', rea)
-        links_mini_news = re.findall('<a href=(.+?)class="b-teasers-2__teaser-i"', doc)
+        aut = BeautifulSoup(requests.get(a).text, "html.parser")
+        z_auto = aut.findAll('span', class_="news-helpers_hide_mobile-small")
+        auto = aut.findAll('a', class_='news-tidings__stub')
+
+        tec = BeautifulSoup(requests.get(t).text, "html.parser")
+        z_tech = tec.findAll('span', class_="news-helpers_hide_mobile-small")
+        tech = tec.findAll('a', class_="news-tidings__stub")
+
+        rea = BeautifulSoup(requests.get(r).text, "html.parser")
+        z_realty = rea.findAll('span', class_="news-helpers_hide_mobile-small")
+        realty = rea.findAll('a', class_="news-tidings__stub")
 
         for forum in links_mini_news:
-            if forum.count(sub):
+            if forum.get('href').count(sub):
                 count += 1
 
         for i in people:
-            links.append(p+i)
+            links.append(p+i.get('href'))
         for i in auto:
-            links.append(a+i)
+            links.append(a+i.get('href'))
         for i in tech:
-            links.append(t+i)
+            links.append(t+i.get('href'))
         for i in realty:
-            links.append(r+i)
+            links.append(r+i.get('href'))
         for i in links_mini_news[0:-count]:
-            links.append(i[1:])
+            links.append(i.get('href'))
 
         for l in z_people:
-            news_name.append(l)
+            news_name.append(l.text)
         for l in z_auto:
-            news_name.append(l)
+            news_name.append(l.text)
         for l in z_tech:
-            news_name.append(l)
+            news_name.append(l.text)
         for l in z_realty:
-            news_name.append(l)
+            news_name.append(l.text)
         for l in mini_news[0:-count]:
-            news_name.append(l)
-        count2 = 0
+            news_name.append(l.text)
+
         for y in news_name:
             count2 += 1
-            self.ui.listWidget.addItem(str(count2)+". "+y[1:])
+            self.listWidget.addItem(str(count2)+". "+y)
         for y in links:
-            self.news_links.append(y[0:-2])
+            self.news_links.append(y)
 
     def text_news(self):
-        n = self.ui.listWidget.currentRow()
+        sub = 'Наш канал'
+        sub2 = 'Читайте также:'
+
+        n = self.listWidget.currentRow()
         u = self.news_links[n]
-        doc = requests.get(u).text
-        h = html2text.HTML2Text()
-        h.ignore_links = True
-        h.body_width = False
-        h.ignore_images = True
-        doc = h.handle(doc)
-        mas = doc.split('\n')
+        page = requests.get(u)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        tag = soup.find("div", class_="news-text")
+        news = tag.findAll('p')
+
+        news_ = []
+        for i in news:
+            news_.append(i.text)
         text = ''
-        for x in mas:
-            if len(x) > 100:
-                text = text + x + '\n\n'
-        self.ui.textEdit.setText(text)
+        count = 0
+        for x in news_:
+            if x.count(sub) != 0 or x.count(sub2) != 0:
+                break
+            count += 1
+            text = text + '   ' + x + '\n\n'
+
+        self.textEdit.setText(text)
 
 
 if __name__ == "__main__":
