@@ -9,7 +9,13 @@ def output(x):
     ex=e**-x
     y=1/(ex+1)
     return y
-
+def nonlin(x,deriv=False):
+    e=m.e
+    ex=e**-x    
+    fx=1/(1+ex)
+    if(deriv==True):
+        return fx*(1-fx)
+    return fx
 maxEpoch=5
 trainSet=4
 
