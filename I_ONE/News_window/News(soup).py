@@ -1,19 +1,18 @@
 import sys
 import html2text
 import requests
-from design import *
+import news_design
 from PyQt5 import QtWidgets
 from bs4 import BeautifulSoup
 
 
-class MyWin(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        QtWidgets.QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+class MyWin(QtWidgets.QMainWindow, news_design.Ui_MainWindow):
+    def __init__(self):
         self.news_links = []
+        super().__init__()
+        self.setupUi(self)
         self.parsing()
-        self.ui.pushButton.clicked.connect(self.text_news)
+        self.pushButton.clicked.connect(self.text_news)
 
     def parsing(self):
         news_name = []
@@ -76,25 +75,32 @@ class MyWin(QtWidgets.QMainWindow):
 
         for y in news_name:
             count2 += 1
-            self.ui.listWidget.addItem(str(count2)+". "+y)
+            self.listWidget.addItem(str(count2)+". "+y)
         for y in links:
             self.news_links.append(y)
 
     def text_news(self):
-        n = self.ui.listWidget.currentRow()
+        n = self.listWidget.currentRow()
         u = self.news_links[n]
-        doc = requests.get(u).text
-        h = html2text.HTML2Text()
-        h.ignore_links = True
-        h.body_width = False
-        h.ignore_images = True
-        doc = h.handle(doc)
-        mas = doc.split('\n')
+        sub = 'Наш канал'
+        sub2 = 'Читайте также:'
+        page = requests.get(u)
+        soup = BeautifulSoup(page.text, 'html.parser')
+        tag = soup.find("div", class_="news-text")
+        news = tag.findAll('p')
+
+        news_ = []
+        for i in news:
+            news_.append(i.text)
         text = ''
-        for x in mas:
-            if len(x) > 100:
-                text = text + x + '\n\n'
-        self.ui.textEdit.setText(text)
+        count = 0
+        for x in news_:
+            if x.count(sub) != 0 or x.count(sub2) != 0:
+                break
+            count += 1
+            text = text + '   ' + x + '\n\n'
+
+        self.textEdit.setText(text)
 
 
 if __name__ == "__main__":
